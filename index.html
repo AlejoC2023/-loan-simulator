@@ -26,6 +26,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
         }
 
         header h1 {
@@ -36,8 +37,24 @@
             color: #60a5fa;
         }
 
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
         .header-icon {
             font-size: 32px;
+        }
+
+        .language-select {
+            background: white;
+            color: #102a43;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 14px;
+            cursor: pointer;
         }
 
         .container {
@@ -244,6 +261,10 @@
             .card {
                 padding: 20px;
             }
+
+            .header-icon {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -252,67 +273,100 @@
 
     <header>
         <h1>🏦 Loan<span>Simulator</span></h1>
-        <div class="header-icon">💰</div>
+
+        <div class="header-right">
+            <select class="language-select"
+                    id="language"
+                    onchange="changeLanguage(this.value)"
+                    aria-label="Select language">
+                <option value="en">🇺🇸 English</option>
+                <option value="es">🇪🇸 Español</option>
+            </select>
+
+            <div class="header-icon">💰</div>
+        </div>
     </header>
 
     <main class="container">
 
         <section class="welcome">
-            <h2>Welcome to Loan Simulator</h2>
-            <p>Calculate your loan payments and manage your finances easily.</p>
+            <h2 data-i18n="welcomeTitle">Welcome to Loan Simulator</h2>
+            <p data-i18n="welcomeDescription">
+                Calculate your loan payments and manage your finances easily.
+            </p>
         </section>
 
         <section class="main-grid">
 
             <div class="card">
-                <h3>📋 Loan Information</h3>
+                <h3 data-i18n="loanInformation">📋 Loan Information</h3>
 
                 <div class="input-group">
-                    <label for="amount">💵 Loan Amount</label>
+                    <label for="amount" data-i18n="loanAmount">
+                        💵 Loan Amount
+                    </label>
                     <input type="number" id="amount"
-                        placeholder="Enter loan amount" min="0" step="0.01">
+                        placeholder="Enter loan amount"
+                        data-placeholder="amountPlaceholder"
+                        min="0" step="0.01">
                 </div>
 
                 <div class="input-group">
-                    <label for="interest">📊 Interest Rate (%)</label>
+                    <label for="interest" data-i18n="interestRate">
+                        📊 Interest Rate (%)
+                    </label>
                     <input type="number" id="interest"
-                        placeholder="Enter interest rate" min="0" step="0.01">
+                        placeholder="Enter interest rate"
+                        data-placeholder="interestPlaceholder"
+                        min="0" step="0.01">
                 </div>
 
                 <div class="input-group">
-                    <label for="rateType">📈 Interest Rate Type</label>
+                    <label for="rateType" data-i18n="rateType">
+                        📈 Interest Rate Type
+                    </label>
                     <select id="rateType">
-                        <option value="monthly">Effective Monthly</option>
-                        <option value="annual">Effective Annual</option>
+                        <option value="monthly" data-i18n="monthly">
+                            Effective Monthly
+                        </option>
+                        <option value="annual" data-i18n="annual">
+                            Effective Annual
+                        </option>
                     </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="months">📅 Loan Term (Months)</label>
+                    <label for="months" data-i18n="loanTerm">
+                        📅 Loan Term (Months)
+                    </label>
                     <input type="number" id="months"
-                        placeholder="Enter number of months" min="1" step="1">
+                        placeholder="Enter number of months"
+                        data-placeholder="monthsPlaceholder"
+                        min="1" step="1">
                 </div>
 
-                <button class="calculate-btn" onclick="calculateLoan()">
+                <button class="calculate-btn"
+                        onclick="calculateLoan()"
+                        data-i18n="calculateButton">
                     Calculate My Loan →
                 </button>
             </div>
 
             <div class="card results-card">
-                <h3>📊 Loan Summary</h3>
+                <h3 data-i18n="loanSummary">📊 Loan Summary</h3>
 
                 <div class="result-item">
-                    <p>Monthly Payment</p>
+                    <p data-i18n="monthlyPayment">Monthly Payment</p>
                     <h2 id="monthlyPayment">—</h2>
                 </div>
 
                 <div class="result-item total">
-                    <p>Total Payment</p>
+                    <p data-i18n="totalPayment">Total Payment</p>
                     <h2 id="totalPayment">—</h2>
                 </div>
 
                 <div class="result-item">
-                    <p>Total Interest</p>
+                    <p data-i18n="totalInterest">Total Interest</p>
                     <h2 id="totalInterest">—</h2>
                 </div>
             </div>
@@ -322,26 +376,33 @@
         <section class="card schedule-card">
 
             <div class="schedule-header">
-                <h3>📑 Amortization Schedule</h3>
-                <span class="badge">Payment Details</span>
+                <h3 data-i18n="amortizationTitle">
+                    📑 Amortization Schedule
+                </h3>
+
+                <span class="badge" data-i18n="paymentDetails">
+                    Payment Details
+                </span>
             </div>
 
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>Month</th>
-                            <th>Payment</th>
-                            <th>Principal</th>
-                            <th>Interest</th>
-                            <th>Remaining Balance</th>
+                            <th data-i18n="month">Month</th>
+                            <th data-i18n="payment">Payment</th>
+                            <th data-i18n="principal">Principal</th>
+                            <th data-i18n="interest">Interest</th>
+                            <th data-i18n="balance">Remaining Balance</th>
                         </tr>
                     </thead>
 
                     <tbody id="schedule">
                         <tr>
-                            <td colspan="5" class="empty-message">
-                                Enter your loan information to see your amortization schedule.
+                            <td colspan="5" class="empty-message"
+                                data-i18n="emptyMessage">
+                                Enter your loan information to see your
+                                amortization schedule.
                             </td>
                         </tr>
                     </tbody>
@@ -352,11 +413,132 @@
 
     </main>
 
-    <footer>
+    <footer data-i18n="footer">
         Loan Simulator © 2026 | Smart Financial Planning
     </footer>
 
     <script>
+
+        // LANGUAGE TRANSLATIONS
+
+        const translations = {
+
+            en: {
+                welcomeTitle: "Welcome to Loan Simulator",
+                welcomeDescription: "Calculate your loan payments and manage your finances easily.",
+                loanInformation: "📋 Loan Information",
+                loanAmount: "💵 Loan Amount",
+                interestRate: "📊 Interest Rate (%)",
+                rateType: "📈 Interest Rate Type",
+                monthly: "Effective Monthly",
+                annual: "Effective Annual",
+                loanTerm: "📅 Loan Term (Months)",
+                calculateButton: "Calculate My Loan →",
+                loanSummary: "📊 Loan Summary",
+                monthlyPayment: "Monthly Payment",
+                totalPayment: "Total Payment",
+                totalInterest: "Total Interest",
+                amortizationTitle: "📑 Amortization Schedule",
+                paymentDetails: "Payment Details",
+                month: "Month",
+                payment: "Payment",
+                principal: "Principal",
+                interest: "Interest",
+                balance: "Remaining Balance",
+                emptyMessage: "Enter your loan information to see your amortization schedule.",
+                footer: "Loan Simulator © 2026 | Smart Financial Planning",
+                amountPlaceholder: "Enter loan amount",
+                interestPlaceholder: "Enter interest rate",
+                monthsPlaceholder: "Enter number of months",
+                error: "Please enter valid loan information."
+            },
+
+            es: {
+                welcomeTitle: "Bienvenido al Simulador de Préstamos",
+                welcomeDescription: "Calcula tus cuotas y administra tus finanzas fácilmente.",
+                loanInformation: "📋 Información del Préstamo",
+                loanAmount: "💵 Monto del Préstamo",
+                interestRate: "📊 Tasa de Interés (%)",
+                rateType: "📈 Tipo de Tasa de Interés",
+                monthly: "Efectiva Mensual",
+                annual: "Efectiva Anual",
+                loanTerm: "📅 Plazo del Préstamo (Meses)",
+                calculateButton: "Calcular mi Préstamo →",
+                loanSummary: "📊 Resumen del Préstamo",
+                monthlyPayment: "Cuota Mensual",
+                totalPayment: "Pago Total",
+                totalInterest: "Intereses Totales",
+                amortizationTitle: "📑 Tabla de Amortización",
+                paymentDetails: "Detalles de Pago",
+                month: "Mes",
+                payment: "Cuota",
+                principal: "Capital",
+                interest: "Intereses",
+                balance: "Saldo Restante",
+                emptyMessage: "Ingresa la información de tu préstamo para ver la tabla de amortización.",
+                footer: "Loan Simulator © 2026 | Planificación Financiera Inteligente",
+                amountPlaceholder: "Ingresa el monto del préstamo",
+                interestPlaceholder: "Ingresa la tasa de interés",
+                monthsPlaceholder: "Ingresa el número de meses",
+                error: "Por favor, ingresa información válida del préstamo."
+            }
+
+        };
+
+        let currentLanguage = "en";
+
+        // CHANGE LANGUAGE WITHOUT RELOADING
+
+        function changeLanguage(language) {
+
+            currentLanguage = language;
+
+            document.documentElement.lang = language;
+
+            document.title = language === "es"
+                ? "Simulador de Préstamos"
+                : "Loan Simulator";
+
+            document.querySelectorAll("[data-i18n]").forEach(element => {
+
+                const key = element.getAttribute("data-i18n");
+
+                element.textContent = translations[language][key];
+
+            });
+
+            document.querySelectorAll("[data-placeholder]").forEach(element => {
+
+                const key = element.getAttribute("data-placeholder");
+
+                element.placeholder = translations[language][key];
+
+            });
+
+            // Update empty table message only if no calculation exists
+
+            if (!hasCalculated) {
+                showEmptyMessage();
+            }
+        }
+
+        // EMPTY TABLE MESSAGE
+
+        let hasCalculated = false;
+
+        function showEmptyMessage() {
+
+            document.getElementById("schedule").innerHTML = `
+                <tr>
+                    <td colspan="5" class="empty-message">
+                        ${translations[currentLanguage].emptyMessage}
+                    </td>
+                </tr>
+            `;
+        }
+
+        // LOAN CALCULATION
+
         function calculateLoan() {
 
             const amount = parseFloat(
@@ -382,29 +564,37 @@
                 !Number.isInteger(months) ||
                 months <= 0
             ) {
-                alert("Please enter valid loan information.");
+                alert(translations[currentLanguage].error);
                 return;
             }
 
             let monthlyRate;
 
             if (rateType === "monthly") {
+
                 monthlyRate = interest / 100;
+
             } else {
+
                 monthlyRate = Math.pow(
                     1 + interest / 100,
                     1 / 12
                 ) - 1;
+
             }
 
             let payment;
 
             if (monthlyRate === 0) {
+
                 payment = amount / months;
+
             } else {
+
                 payment =
                     amount * monthlyRate /
                     (1 - Math.pow(1 + monthlyRate, -months));
+
             }
 
             let balance = amount;
@@ -419,9 +609,12 @@
                 let actualPayment = payment;
 
                 if (month === months) {
+
                     principalPayment = balance;
+
                     actualPayment =
                         principalPayment + interestPayment;
+
                 }
 
                 balance -= principalPayment;
@@ -441,6 +634,7 @@
                         <td>${balance.toFixed(2)}</td>
                     </tr>
                 `;
+
             }
 
             document.getElementById("monthlyPayment").textContent =
@@ -454,9 +648,15 @@
 
             document.getElementById("schedule").innerHTML =
                 scheduleHTML;
+
+            hasCalculated = true;
+
         }
+
     </script>
 
 </body>
 </html>
+
+
 
