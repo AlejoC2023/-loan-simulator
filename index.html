@@ -5,59 +5,356 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loan Simulator</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #102a43;
+            color: white;
+            padding: 25px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 25px;
+        }
+
+        header span {
+            color: #60a5fa;
+        }
+
+        .header-icon {
+            font-size: 32px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            font-size: 27px;
+            color: #102a43;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #64748b;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            color: #102a43;
+            margin-bottom: 25px;
+            font-size: 19px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #334155;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            font-size: 15px;
+            background: #f8fafc;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            border-radius: 9px;
+            padding: 13px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            background: #2563eb;
+            color: white;
+            margin-top: 8px;
+        }
+
+        .calculate-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .results-card {
+            background: #102a43;
+            color: white;
+        }
+
+        .results-card h3 {
+            color: white;
+        }
+
+        .result-item {
+            background: rgba(255,255,255,0.08);
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .result-item p {
+            color: #cbd5e1;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .result-item h2 {
+            font-size: 25px;
+            color: #4ade80;
+        }
+
+        .result-item.total h2 {
+            color: white;
+        }
+
+        .schedule-card {
+            margin-top: 25px;
+        }
+
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .schedule-header h3 {
+            margin: 0;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th {
+            background: #eaf1fb;
+            color: #102a43;
+            padding: 15px;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        td {
+            padding: 14px 15px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        .badge {
+            background: #dcfce7;
+            color: #15803d;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #94a3b8;
+            padding: 35px;
+        }
+
+        footer {
+            text-align: center;
+            color: #94a3b8;
+            padding: 30px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 750px) {
+            header {
+                padding: 20px;
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome h2 {
+                font-size: 23px;
+            }
+
+            .schedule-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>Loan Simulator</h1>
+    <header>
+        <h1>🏦 Loan<span>Simulator</span></h1>
+        <div class="header-icon">💰</div>
+    </header>
 
-    <h2>Loan Information</h2>
+    <main class="container">
 
-    <label for="amount">Loan Amount:</label>
-    <input type="number" id="amount" min="0" step="0.01">
+        <section class="welcome">
+            <h2>Welcome to Loan Simulator</h2>
+            <p>Calculate your loan payments and manage your finances easily.</p>
+        </section>
 
-    <br><br>
+        <section class="main-grid">
 
-    <label for="interest">Interest Rate (%):</label>
-    <input type="number" id="interest" min="0" step="0.01">
+            <div class="card">
+                <h3>📋 Loan Information</h3>
 
-    <br><br>
+                <div class="input-group">
+                    <label for="amount">💵 Loan Amount</label>
+                    <input type="number" id="amount"
+                        placeholder="Enter loan amount" min="0" step="0.01">
+                </div>
 
-    <label for="rateType">Interest Rate Type:</label>
-    <select id="rateType">
-        <option value="monthly">Effective Monthly</option>
-        <option value="annual">Effective Annual</option>
-    </select>
+                <div class="input-group">
+                    <label for="interest">📊 Interest Rate (%)</label>
+                    <input type="number" id="interest"
+                        placeholder="Enter interest rate" min="0" step="0.01">
+                </div>
 
-    <br><br>
+                <div class="input-group">
+                    <label for="rateType">📈 Interest Rate Type</label>
+                    <select id="rateType">
+                        <option value="monthly">Effective Monthly</option>
+                        <option value="annual">Effective Annual</option>
+                    </select>
+                </div>
 
-    <label for="months">Loan Term (Months):</label>
-    <input type="number" id="months" min="1" step="1">
+                <div class="input-group">
+                    <label for="months">📅 Loan Term (Months)</label>
+                    <input type="number" id="months"
+                        placeholder="Enter number of months" min="1" step="1">
+                </div>
 
-    <br><br>
+                <button class="calculate-btn" onclick="calculateLoan()">
+                    Calculate My Loan →
+                </button>
+            </div>
 
-    <button onclick="calculateLoan()">Calculate Loan</button>
+            <div class="card results-card">
+                <h3>📊 Loan Summary</h3>
 
-    <h2>Loan Results</h2>
+                <div class="result-item">
+                    <p>Monthly Payment</p>
+                    <h2 id="monthlyPayment">—</h2>
+                </div>
 
-    <p id="monthlyPayment"></p>
-    <p id="totalPayment"></p>
-    <p id="totalInterest"></p>
+                <div class="result-item total">
+                    <p>Total Payment</p>
+                    <h2 id="totalPayment">—</h2>
+                </div>
 
-    <h2>Amortization Schedule</h2>
+                <div class="result-item">
+                    <p>Total Interest</p>
+                    <h2 id="totalInterest">—</h2>
+                </div>
+            </div>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Month</th>
-                <th>Payment</th>
-                <th>Principal</th>
-                <th>Interest</th>
-                <th>Remaining Balance</th>
-            </tr>
-        </thead>
-        <tbody id="schedule">
-        </tbody>
-    </table>
+        </section>
+
+        <section class="card schedule-card">
+
+            <div class="schedule-header">
+                <h3>📑 Amortization Schedule</h3>
+                <span class="badge">Payment Details</span>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Payment</th>
+                            <th>Principal</th>
+                            <th>Interest</th>
+                            <th>Remaining Balance</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="schedule">
+                        <tr>
+                            <td colspan="5" class="empty-message">
+                                Enter your loan information to see your amortization schedule.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        Loan Simulator © 2026 | Smart Financial Planning
+    </footer>
 
     <script>
         function calculateLoan() {
@@ -73,16 +370,16 @@
             const rateType =
                 document.getElementById("rateType").value;
 
-            const months = parseInt(
+            const months = Number(
                 document.getElementById("months").value
             );
 
             if (
                 !Number.isFinite(amount) ||
                 !Number.isFinite(interest) ||
-                !Number.isInteger(months) ||
                 amount <= 0 ||
                 interest < 0 ||
+                !Number.isInteger(months) ||
                 months <= 0
             ) {
                 alert("Please enter valid loan information.");
@@ -106,8 +403,7 @@
                 payment = amount / months;
             } else {
                 payment =
-                    amount *
-                    monthlyRate /
+                    amount * monthlyRate /
                     (1 - Math.pow(1 + monthlyRate, -months));
             }
 
@@ -120,12 +416,12 @@
                 const interestPayment = balance * monthlyRate;
 
                 let principalPayment = payment - interestPayment;
-
                 let actualPayment = payment;
 
                 if (month === months) {
                     principalPayment = balance;
-                    actualPayment = principalPayment + interestPayment;
+                    actualPayment =
+                        principalPayment + interestPayment;
                 }
 
                 balance -= principalPayment;
@@ -148,14 +444,13 @@
             }
 
             document.getElementById("monthlyPayment").textContent =
-                "Monthly Payment: " + payment.toFixed(2);
+                payment.toFixed(2);
 
             document.getElementById("totalPayment").textContent =
-                "Total Payment: " +
                 (amount + totalInterest).toFixed(2);
 
             document.getElementById("totalInterest").textContent =
-                "Total Interest: " + totalInterest.toFixed(2);
+                totalInterest.toFixed(2);
 
             document.getElementById("schedule").innerHTML =
                 scheduleHTML;
@@ -164,3 +459,4 @@
 
 </body>
 </html>
+
